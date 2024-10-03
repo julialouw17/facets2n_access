@@ -7,7 +7,7 @@ FACETS2n, developed by Ryan Ptashkin, is designed to compute copy number estimat
 The motivation behind this pipeline is to implement the FACETS2n package for cfDNA samples. A major issue with cfDNA samples is the difference in sequencing coverage between tumor and matched normal samples. By including several unmatched normals in the analysis, some of these biases can be mitigated. In this repository, I will provide a comprehensive workflow to run FACETS2n on ACCESS samples generate downstream copy number calls.
 
 ## Requirements
--  R (>= 3.4.0), pctGCdata (>= 0.3.0)
+-  R (>= 3.4.0), pctGCdata (>= 0.3.0), facets2n, facetsSuite
 - snp-pileup and HTSlib: see [Installation and usage](https://github.com/rptashkin/facets2n/blob/master/inst/extcode/README.txt)
 - BAM file from tumor sample
 - BAM from patient matched normal sample
