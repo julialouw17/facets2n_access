@@ -103,7 +103,6 @@ The cval used in this step is 50. If you want more segmentation, then decrease t
 ```
 facets2n::plotSample(x=pass2_<Sample_ID>, emfit = fit_<Sample_ID>, plot.type = "both")
 ```
-
 put png image here
 
 
