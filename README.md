@@ -78,7 +78,7 @@ readu_<Sample_ID> <- facets2n::readSnpMatrix(filename = "<path to snp pileup fro
 ```
 Note: set `unmatched = TRUE` if not using matched normal.
 
-#### Step 3b:  Pre-process inputs count data using the 'procSample` function
+#### Step 3b:  Pre-process inputs count data using the `procSample` function
 ```
 data_<Sample_ID? <- facets2n::preProcSample(readu_<Sample_ID>$rcmat, unmatched = FALSE,
   ndepth = 100, het.thresh = 0.25, ndepthmax = 5000, spanT = readu_<Sample_ID>$spanT, spanA = readu_<Sample_ID>$spanA, spanX = readu_<Sample_ID>$spanX, MandUnormal = TRUE)
