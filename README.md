@@ -32,6 +32,12 @@ FACETS-suite:
 devtools::install_github("mskcc/facets-suite")
 ```
 
+```
+library(pctGCdata)
+library(facets2n)
+library(facetsSuite)
+```
+
 ## Step 1: Generate reference files
 
 #### Step 1a: Snp pileup on unmatched reference normals:
@@ -104,6 +110,58 @@ The cval used in this step is 50. If you want more segmentation, then decrease t
 facets2n::plotSample(x=pass2_<Sample_ID>, emfit = fit_<Sample_ID>, plot.type = "both")
 ```
 put png image here
+
+## Step 5: Downstream analysis
+
+#### Step 5a: Reformat FACETS2n output
+
+```{r}
+<Sample_ID>_cncf <- fitcncf(pass2_<Sample_ID>$out, dipLogR = dlr_<Sample_ID>)
+
+segs_<Sample_ID> <- fit_<Sample_ID>$cncf
+segs_<Sample_ID>$tcn <- <Sample_ID>_cncf$tcn 
+segs_<Sample_ID>$lcn <- <Sample_ID>_cncf$lcn
+segs_<Sample_ID>$cf <- <Sample_ID>_cncf$cf
+
+<Sample_ID>_output <- list(
+    snps = pass2_<Sample_ID>$jointseg,
+    segs = segs_<Sample_ID>,
+    purity = fit_<Sample_ID>$purity,
+    ploidy = fit_<Sample_ID>$ploidy,
+    dipLogR = fit_<Sample_ID>$dipLogR,
+    alballogr = NULL,
+    flags = NULL,
+    em_flags = fit_<Sample_ID>$emflags,
+    loglik = fit_<Sample_ID>$loglik
+  )
+```
+
+#### Step 5b: Extract gene level copy number information
+
+```{r}
+<Sample_ID>_gene_level_changes <- facetsSuite::gene_level_changes(<Sample_ID>_output, genome = "hg19", algorithm = "em")
+<Sample_ID>_gene_level_changes[<Sample_ID>_gene_level_changes$gene == "ERBB2", ]
+```
+
+This code will map the segmentation data to known genomic coordinates and provide integer copy numbers for each gene, as well as the copy number state. Choice between EM and CNCF methods.
+
+Put example data frame here
+
+#### Step 5c: Extract mutation copy number dosage information
+
+A MAF file is required for this step containing known mutations in the sample. 
+
+```{r}
+<Sample_ID>_maf <- fread("/Users/julialouw/Desktop/thesis/HER2/nov_11/C-4XP507/current/C-4XP507-L006-d.DONOR22-TP.combined-variants.vep.maf")
+
+maf_<Sample_ID> <- ccf_annotate_maf(segs = segs_<Sample_ID>, maf = <Sample_ID>_maf, purity = fit_<Sample_ID>$purity, algorithm = "em")
+
+maf_<Sample_ID>[maf_C_<Sample_ID>$Hugo_Symbol == "ERBB2", ]
+```
+Choice between EM and CNCF methods. Can extract the information for the genes of interest, in this case ERBB2.
+
+
+
 
 
 
